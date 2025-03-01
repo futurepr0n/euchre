@@ -1302,8 +1302,27 @@ function renderTrickArea() {
             
             trickArea.appendChild(cardEl);
             
-            if (play.player === gameState.trickWinner) {
-                cardEl.classList.add('trick-winner');
+            // If we have a trick winner (trick completed)
+            if (gameState.trickWinner) {
+                if (play.player === gameState.trickWinner) {
+                    cardEl.classList.add('trick-winner');
+                    
+                    // Add a text indicator for the winner
+                    const winLabel = document.createElement('div');
+                    winLabel.className = 'win-label';
+                    winLabel.textContent = 'WINNER';
+                    winLabel.style.position = 'absolute';
+                    winLabel.style.bottom = '-20px';
+                    winLabel.style.left = '50%';
+                    winLabel.style.transform = 'translateX(-50%)';
+                    winLabel.style.color = 'gold';
+                    winLabel.style.fontWeight = 'bold';
+                    winLabel.style.fontSize = '12px';
+                    winLabel.style.textShadow = '0 0 3px black';
+                    cardEl.appendChild(winLabel);
+                } else {
+                    cardEl.classList.add('trick-loser');
+                }
             }
         });
     }
@@ -1452,7 +1471,7 @@ function nextTrickPlayer() {
                     cpuPlayCard();
                 }
             }
-        }, 2000);
+        }, 3500);
     } else {
         // Move to next player
         gameState.currentPlayer = PLAYERS[(PLAYERS.indexOf(gameState.currentPlayer) + 1) % 4];

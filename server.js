@@ -533,7 +533,7 @@ function nextTrickPlayer() {
                 // If CPU's turn, handle CPU play
                 handleCpuTurn();
             }
-        }, 1500);
+        }, 3500);
     } else {
         // Move to next player
         gameState.gameData.currentPlayer = PLAYERS[(PLAYERS.indexOf(gameState.gameData.currentPlayer) + 1) % 4];
