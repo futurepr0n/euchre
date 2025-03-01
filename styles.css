@@ -1,0 +1,370 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #0a5c36;
+    color: white;
+    padding: 20px;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.game-container {
+    width: 100%;
+    max-width: 800px;
+    height: 600px;
+    position: relative;
+    margin: 0 auto;
+    background-color: #0a7c46;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+    overflow: hidden;
+}
+.game-table {
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+.player-area {
+    position: absolute;
+    width: 180px;
+    height: 140px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    padding: 10px;
+}
+.player-south {
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+.player-west {
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+.player-north {
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+.player-east {
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+.player-name {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+.player-score {
+    font-size: 0.9em;
+    margin-bottom: 10px;
+}
+.card-container {
+    display: flex;
+    justify-content: center;
+    height: 70px;
+}
+.card {
+    width: 40px;
+    height: 60px;
+    background-color: white;
+    border-radius: 5px;
+    margin: 0 2px;
+    cursor: pointer;
+    position: relative;
+    box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+    transition: transform 0.2s, box-shadow 0.2s;
+    color: black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 14px;
+    user-select: none;
+}
+.human-player .card:hover {
+    transform: translateY(-10px);
+    box-shadow: 2px 5px 5px rgba(0, 0, 0, 0.4);
+}
+.card.red {
+    color: red;
+}
+.card-back {
+    background-color: navy;
+    background-image: repeating-linear-gradient(45deg, rgba(255,255,255,.1) 0, rgba(255,255,255,.1) 10px, transparent 10px, transparent 20px);
+}
+.trick-area {
+    position: absolute;
+    width: 200px;
+    height: 200px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.trick-card {
+    position: absolute;
+    width: 40px;
+    height: 60px;
+    background-color: white;
+    border-radius: 5px;
+    box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+    color: black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 14px;
+}
+.trick-south { bottom: 20px; }
+.trick-west { left: 20px; }
+.trick-north { top: 20px; }
+.trick-east { right: 20px; }
+.trick-card.red { color: red; }
+.game-info {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(0, 0, 0, 0.7);
+    border-radius: 10px;
+    padding: 15px;
+    text-align: center;
+    width: 300px;
+}
+.trump-indicator {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background-color: rgba(0, 0, 0, 0.5);
+    padding: 8px;
+    border-radius: 5px;
+    font-size: 14px;
+}
+.turn-indicator {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    background-color: gold;
+    border-radius: 50%;
+    animation: pulse 1s infinite;
+}
+@keyframes pulse {
+    0% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.2); opacity: 0.7; }
+    100% { transform: scale(1); opacity: 1; }
+}
+.trick-winner {
+    animation: highlight 1.5s;
+}
+@keyframes highlight {
+    0% { box-shadow: 0 0 0 rgba(255, 215, 0, 0); }
+    50% { box-shadow: 0 0 20px rgba(255, 215, 0, 1); }
+    100% { box-shadow: 0 0 0 rgba(255, 215, 0, 0); }
+}
+.controls {
+    margin-top: 20px;
+    display: flex;
+    gap: 10px;
+}
+button {
+    padding: 8px 15px;
+    background-color: #00529b;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+}
+button:hover {
+    background-color: #0066cc;
+}
+button:disabled {
+    background-color: #666;
+    cursor: not-allowed;
+}
+.log-container {
+    margin-top: 20px;
+    width: 100%;
+    max-width: 800px;
+    height: 100px;
+    overflow-y: auto;
+    background-color: rgba(0, 0, 0, 0.5);
+    border-radius: 5px;
+    padding: 10px;
+    font-size: 14px;
+}
+.log-entry {
+    margin-bottom: 3px;
+}
+.score-board {
+    display: flex;
+    gap: 20px;
+    margin-top: 10px;
+    font-size: 16px;
+    background-color: rgba(0, 0, 0, 0.3);
+    padding: 10px;
+    border-radius: 5px;
+}
+.dealer-chip {
+    position: absolute;
+    width: 15px;
+    height: 15px;
+    background-color: white;
+    border-radius: 50%;
+    border: 2px solid gold;
+}
+.dealer-south { bottom: 0; left: 50%; transform: translateX(-50%); }
+.dealer-west { left: 0; top: 50%; transform: translateY(-50%); }
+.dealer-north { top: 0; left: 50%; transform: translateX(-50%); }
+.dealer-east { right: 0; top: 50%; transform: translateY(-50%); }
+
+/* Multiplayer styles */
+.sit-button {
+    position: absolute;
+    font-size: 12px;
+    padding: 4px 8px;
+    background-color: #ff9800;
+    cursor: pointer;
+    z-index: 10;
+}
+.sit-west { left: 10px; top: 10px; }
+.sit-north { top: 10px; left: 50%; transform: translateX(-50%); }
+.sit-east { right: 10px; top: 10px; }
+
+.player-tag {
+    position: absolute;
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    font-size: 10px;
+    padding: 2px 5px;
+    border-radius: 3px;
+    z-index: 5;
+}
+.tag-south { bottom: 5px; left: 5px; }
+.tag-west { left: 5px; top: 5px; }
+.tag-north { top: 5px; left: 5px; }
+.tag-east { top: 5px; right: 5px; }
+
+#connection-panel {
+    margin-bottom: 20px;
+    padding: 10px;
+    background-color: rgba(0, 0, 0, 0.3);
+    border-radius: 5px;
+    width: 100%;
+    max-width: 800px;
+}
+
+.connection-status {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.status-indicator {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.status-connected {
+    background-color: #4CAF50;
+}
+
+.status-disconnected {
+    background-color: #F44336;
+}
+
+.status-connecting {
+    background-color: #FFC107;
+    animation: blink 1s infinite;
+}
+
+@keyframes blink {
+    0% { opacity: 0.5; }
+    50% { opacity: 1; }
+    100% { opacity: 0.5; }
+}
+
+.player-list {
+    margin-top: 10px;
+    font-size: 14px;
+}
+
+.player-list-item {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 5px;
+}
+
+.connection-form {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.connection-form input {
+    padding: 8px;
+    border-radius: 5px;
+    border: none;
+    flex-grow: 1;
+}
+
+#player-name-input {
+    max-width: 200px;
+}
+
+.chat-container {
+    width: 100%;
+    max-width: 800px;
+    display: flex;
+    flex-direction: column;
+    margin-top: 20px;
+}
+
+.chat-messages {
+    height: 150px;
+    background-color: rgba(0, 0, 0, 0.5);
+    border-radius: 5px;
+    padding: 10px;
+    overflow-y: auto;
+    margin-bottom: 10px;
+}
+
+.chat-form {
+    display: flex;
+    gap: 10px;
+}
+
+.chat-form input {
+    flex-grow: 1;
+    padding: 8px;
+    border-radius: 5px;
+    border: none;
+}
+
+.chat-message {
+    margin-bottom: 5px;
+}
+
+.chat-sender {
+    font-weight: bold;
+    margin-right: 5px;
+}
+
+.chat-time {
+    font-size: 0.8em;
+    color: #ccc;
+    margin-right: 5px;
+}

@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Euchre Card Game</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <h1>Euchre</h1>
+    
+    <div id="connection-panel">
+        <div class="connection-status">
+            <div id="status-indicator" class="status-indicator status-disconnected"></div>
+            <span id="connection-status-text">Disconnected</span>
+        </div>
+        
+        <div class="connection-form">
+            <input type="text" id="player-name-input" placeholder="Your Name" value="Player">
+            <input type="text" id="server-url-input" placeholder="WebSocket Server URL" value="ws://localhost:8080">
+            <button id="connect-btn">Connect</button>
+            <button id="disconnect-btn" disabled>Disconnect</button>
+        </div>
+        
+        <div class="player-list">
+            <h3>Connected Players:</h3>
+            <div id="connected-players-list"></div>
+        </div>
+    </div>
+    
+    <div class="score-board">
+        <div>Team 1: <span id="team-score-1">0</span></div>
+        <div>Team 2: <span id="team-score-2">0</span></div>
+    </div>
+    
+    <div class="game-container">
+        <div class="game-table">
+            <div class="player-area player-north">
+                <button class="sit-button sit-north" id="sit-north">Sit Here</button>
+                <div class="player-tag tag-north">CPU</div>
+                <div class="player-name">North</div>
+                <div class="player-score">Tricks: <span class="tricks-count">0</span></div>
+                <div class="card-container" id="north-hand"></div>
+            </div>
+            <div class="player-area player-east">
+                <button class="sit-button sit-east" id="sit-east">Sit Here</button>
+                <div class="player-tag tag-east">CPU</div>
+                <div class="player-name">East</div>
+                <div class="player-score">Tricks: <span class="tricks-count">0</span></div>
+                <div class="card-container" id="east-hand"></div>
+            </div>
+            <div class="player-area player-south human-player">
+                <div class="player-tag tag-south">You</div>
+                <div class="player-name">South (You)</div>
+                <div class="player-score">Tricks: <span class="tricks-count">0</span></div>
+                <div class="card-container" id="south-hand"></div>
+            </div>
+            <div class="player-area player-west">
+                <button class="sit-button sit-west" id="sit-west">Sit Here</button>
+                <div class="player-tag tag-west">CPU</div>
+                <div class="player-name">West</div>
+                <div class="player-score">Tricks: <span class="tricks-count">0</span></div>
+                <div class="card-container" id="west-hand"></div>
+            </div>
+            
+            <div class="trick-area" id="trick-area"></div>
+            
+            <div id="game-info" class="game-info">
+                <p id="info-text">Welcome to Euchre! Click Deal to start.</p>
+                <div id="bidding-controls" style="display: none; margin-top: 10px;">
+                    <button id="order-up">Order Up</button>
+                    <button id="pass-bid">Pass</button>
+                </div>
+                <div id="suit-selection" style="display: none; margin-top: 10px;">
+                    <button class="suit-btn" data-suit="hearts">Hearts ♥</button>
+                    <button class="suit-btn" data-suit="diamonds">Diamonds ♦</button>
+                    <button class="suit-btn" data-suit="clubs">Clubs ♣</button>
+                    <button class="suit-btn" data-suit="spades">Spades ♠</button>
+                    <button id="pass-suit">Pass</button>
+                </div>
+            </div>
+            
+            <div id="trump-indicator" class="trump-indicator" style="display: none;">
+                Trump: <span id="trump-suit"></span>
+            </div>
+        </div>
+    </div>
+    
+    <div class="controls">
+        <button id="deal-btn">Deal</button>
+        <button id="new-game-btn">New Game</button>
+    </div>
+    
+    <div class="log-container" id="game-log">
+        <div class="log-entry">Game started. Connect to a WebSocket server to play with others.</div>
+    </div>
+    
+    <div class="chat-container">
+        <div class="chat-messages" id="chat-messages"></div>
+        <div class="chat-form">
+            <input type="text" id="chat-input" placeholder="Type a message...">
+            <button id="send-chat-btn">Send</button>
+        </div>
+    </div>
+
+    <script src="game.js"></script>
+</body>
+</html>
