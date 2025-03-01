@@ -1225,10 +1225,23 @@ function renderHands() {
             cardEl.className = 'card';
             
             if (shouldShowCards) {
-                cardEl.textContent = `${card.rank}${SUIT_SYMBOLS[card.suit]}`;
-                if (card.suit === 'hearts' || card.suit === 'diamonds') {
+                // New card layout with separated value and symbol
+                const isRed = card.suit === 'hearts' || card.suit === 'diamonds';
+                if (isRed) {
                     cardEl.classList.add('red');
                 }
+                
+                // Add card value in corner
+                const valueEl = document.createElement('div');
+                valueEl.className = 'card-value';
+                valueEl.textContent = `${card.rank}`;
+                cardEl.appendChild(valueEl);
+                
+                // Add large suit symbol in center
+                const symbolEl = document.createElement('div');
+                symbolEl.className = 'card-symbol';
+                symbolEl.textContent = SUIT_SYMBOLS[card.suit];
+                cardEl.appendChild(symbolEl);
                 
                 // Add click event for playing cards during the playing phase
                 if (player === getLocalPlayerPosition()) {
@@ -1271,10 +1284,22 @@ function renderTrickArea() {
         gameState.currentTrick.forEach(play => {
             const cardEl = document.createElement('div');
             cardEl.className = `trick-card trick-${play.player}`;
-            if (play.card.suit === 'hearts' || play.card.suit === 'diamonds') {
+            const isRed = play.card.suit === 'hearts' || play.card.suit === 'diamonds';
+            if (isRed) {
                 cardEl.classList.add('red');
             }
-            cardEl.textContent = `${play.card.rank}${SUIT_SYMBOLS[play.card.suit]}`;
+            
+            // Use the same improved card layout
+            const valueEl = document.createElement('div');
+            valueEl.className = 'card-value';
+            valueEl.textContent = `${play.card.rank}`;
+            cardEl.appendChild(valueEl);
+            
+            const symbolEl = document.createElement('div');
+            symbolEl.className = 'card-symbol';
+            symbolEl.textContent = SUIT_SYMBOLS[play.card.suit];
+            cardEl.appendChild(symbolEl);
+            
             trickArea.appendChild(cardEl);
             
             if (play.player === gameState.trickWinner) {
