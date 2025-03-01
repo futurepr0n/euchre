@@ -1217,14 +1217,16 @@ function renderHands() {
         const container = document.getElementById(`${player}-hand`);
         container.innerHTML = '';
         
-        // Only render cards for local player or spectator view for all human players
-        const shouldShowCards = player === getLocalPlayerPosition() || isSpectator();
+ 
+        const shouldShowCards = player === getLocalPlayerPosition();
         
         gameState.hands[player].forEach((card, index) => {
             const cardEl = document.createElement('div');
-            cardEl.className = 'card';
             
             if (shouldShowCards) {
+                // This is the local player's hand, show the cards
+                cardEl.className = 'card';
+                
                 // New card layout with separated value and symbol
                 const isRed = card.suit === 'hearts' || card.suit === 'diamonds';
                 if (isRed) {
@@ -1244,14 +1246,13 @@ function renderHands() {
                 cardEl.appendChild(symbolEl);
                 
                 // Add click event for playing cards during the playing phase
-                if (player === getLocalPlayerPosition()) {
-                    cardEl.addEventListener('click', () => {
-                        if (gameState.gamePhase === 'playing' && gameState.currentPlayer === player) {
-                            playCard(index);
-                        }
-                    });
-                }
+                cardEl.addEventListener('click', () => {
+                    if (gameState.gamePhase === 'playing' && gameState.currentPlayer === player) {
+                        playCard(index);
+                    }
+                });
             } else {
+                // This is another player's hand - always show card backs
                 cardEl.className = 'card card-back';
             }
             

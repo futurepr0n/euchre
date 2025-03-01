@@ -334,14 +334,38 @@ function broadcastPlayerList() {
 }
 
 function broadcastGameState() {
-    // Create a copy of the game state without sensitive info
-    const stateCopy = JSON.parse(JSON.stringify(gameState.gameData));
-    
-    // Send full state to all players
-    broadcastToAll({
-        type: "game_state",
-        state: stateCopy
-    });
+    for (const clientId in gameState.players) {
+        const client = gameState.players[clientId];
+        if (client.ws.readyState === WebSocket.OPEN) {
+            // Create a copy of the game state
+            const stateCopy = JSON.parse(JSON.stringify(gameState.gameData));
+            
+            // Modify the copy to hide other players' cards
+            const playerPosition = gameState.players[clientId].position;
+            
+            // If this client has a position, only show their cards
+            if (playerPosition) {
+                for (const pos in stateCopy.hands) {
+                    // Replace card details with just the count for positions other than the player's
+                    if (pos !== playerPosition) {
+                        const cardCount = stateCopy.hands[pos].length;
+                        stateCopy.hands[pos] = Array(cardCount).fill({ hidden: true });
+                    }
+                }
+            } else {
+                // This is a spectator, hide all cards
+                for (const pos in stateCopy.hands) {
+                    const cardCount = stateCopy.hands[pos].length;
+                    stateCopy.hands[pos] = Array(cardCount).fill({ hidden: true });
+                }
+            }
+            
+            client.ws.send(JSON.stringify({
+                type: "game_state",
+                state: stateCopy
+            }));
+        }
+    }
 }
 
 function sendGameState(clientId) {
